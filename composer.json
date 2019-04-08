@@ -1,0 +1,15 @@
+{
+    "name": "gomobile/gomobile",
+    "description": "Official gomobile PHP SDK",
+    "keywords": ["api", "voice", "gomobile"],
+    "homepage": "https://github.com/ulquiorra04/gomobile-php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ABDELHAMID RAHMAOUI",
+            "email": "rahmaoui.developer@gmail.com"
+        }
+    ],
+    "require": {}
+}
