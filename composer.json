@@ -11,5 +11,12 @@
             "email": "rahmaoui.developer@gmail.com"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Gomobile\\SDK\\":"src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
 }
