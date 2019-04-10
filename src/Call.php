@@ -15,7 +15,7 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody());
+            return $this->success($response->getBody()->getContents());
         } else {
             return $this->error("error while processing");
         }
@@ -39,7 +39,7 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody());
+            return $this->success($response->getBody()->getContents());
         } else {
             return $this->error("error while processing");
         }
