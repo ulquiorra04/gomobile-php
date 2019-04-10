@@ -17,7 +17,7 @@ class Gomobile {
     }
 
     public function call () {
-        $call = new Call($this->client);
+        $call = new Call($this->client, $this->username, $this->password);
         return $call;
     }
 
