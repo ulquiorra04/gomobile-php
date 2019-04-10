@@ -10,6 +10,7 @@ class Base {
 
     const BASE_DOMAINE = "http://192.168.1.6/";
     const SINGLE_STATIC_CALL = "backoffice/ScenariosUsers/makeSingleStaticCall";
+    const MULTIPLE_STATIC_CALL = "backoffice/ScenariosUsers/makeMultipleStaticCall";
     
     public function __construct ($client, $username, $password) {
         $this->client = $client;
