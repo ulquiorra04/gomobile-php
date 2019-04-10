@@ -45,4 +45,23 @@ class Call extends Base {
         }
     }
 
+    public function makeSingleDynamicCall ($data=array()) {
+        if(!is_array($data))
+            return $this->error("You must send a table of data");
+        $url = parent::BASE_DOMAINE . parent::SINGLE_DYNAMIC_CALL;
+        $response = $this->client->request('POST', $url, [
+                        'form_params' => [
+                            'login' => $this->username,
+                            'password' => $this->password,
+                            'scenarioId' => $scenarioId,
+                            'user' => json_encode($data)
+                        ]
+                    ]);
+        if($response->getStatusCode() == 200) {
+            return $this->success($response->getBody()->getContents());
+        } else {
+            return $this->error("error while processing");
+        }
+    }
+
 }
