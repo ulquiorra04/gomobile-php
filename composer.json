@@ -5,6 +5,7 @@
     "homepage": "https://github.com/ulquiorra04/gomobile-php",
     "type": "library",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "ABDELHAMID RAHMAOUI",
