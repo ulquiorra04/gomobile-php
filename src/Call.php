@@ -2,9 +2,23 @@
 
 namespace Gomobile\SDK;
 
+use Gomobile\HLP\NumberHelper;
+
 class Call extends Base {
     
+    /**
+     * Make a single Static Call
+     * @param string $phoneNumber
+     * @param int $scenarioId
+     * 
+     * @return json
+     */
     public function makeSingleStaticCall ($phoneNumber, $scenarioId) {
+
+        // Check if valid number
+        if(!NumberHelper::isNationnalNumber($phoneNumber))
+            return $this->error('You must use a valid moroccan phone number');
+
         $url = parent::BASE_DOMAINE . parent::SINGLE_STATIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
