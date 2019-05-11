@@ -63,9 +63,14 @@ class Call extends Base {
         }
     }
 
-    public function makeSingleDynamicCall ($data=array()) {
+    public function makeSingleDynamicCall ($phoneNumber, $data=array()) {
+        if(NumberHelper::isValidNationalNumber($phoneNumber))
+            return $this->error("The phone number is not valid");
         if(!is_array($data))
-            return $this->error("You must send a table of data");
+            return $this->error("You must send a array of data");
+        
+        //Check the parameters send
+        
         $url = parent::BASE_DOMAINE . parent::SINGLE_DYNAMIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
