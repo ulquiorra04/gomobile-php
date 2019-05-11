@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomobile\HLP;
+namespace Gomobile\SDK\HLP;
 
 class NumberHelper {
     
@@ -10,8 +10,10 @@ class NumberHelper {
      * @param string $number: Phone number
      * @return bool
      */
-    public static function isInternationnalNumber ($number) {
-        return preg_match("/^+212[0-9]{9}$/", $number);
+    public static function isValidInternationalNumber ($number) {
+        if(preg_match("/^\+212[0-9]{9}$/", $number))
+            return true;
+        return false;
     }
 
     /**
@@ -20,8 +22,10 @@ class NumberHelper {
      * @param string $number: Phone number
      * @return bool
      */
-    public static function isNationnalNumber ($number) {
-        return preg_match("/^0[5-6-7][0-9]{8}$/", $number);
+    public static function isValidNationalNumber ($number) {
+        if(preg_match("/^0[5-6-7][0-9]{8}$/", $number))
+            return true;
+        return false;
     }
 
     /**
@@ -31,7 +35,7 @@ class NumberHelper {
      * @return string $phone : National format
      */
     public static function phoneConverter ($phone) {
-        if(self::isInternationnalNumber($phone))
+        if(self::isValidInternationalNumber($phone))
             return "0".ltrim($phone, "+212");
     }
 
@@ -43,6 +47,10 @@ class NumberHelper {
      */
     public static function isValidArrayPhoneNumbers ($phoneNumbers)
     {
-        
+        foreach ($phoneNumbers as $phone) {
+            if(!self::isValidNationalNumber($phone))
+                return false;
+        }
+        return true;
     }
 }

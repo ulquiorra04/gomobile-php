@@ -36,10 +36,14 @@ class Call extends Base {
     }
 
     public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
+        // Check if the numbers are array 
         if(!is_array($phoneNumber))
-            return $this->error("You must send a table of phone numbers");
+            return $this->error("You must send an array of phone numbers");
+        
         $tableNumber = [];
         foreach ($phonesNumber as $phone) {
+            if(!NumberHelper::isNationnalNumber($phone))
+                return $this->error("This phone number : $phone is not valid");
             array_push($tableNumber, ["phoneNumber" => $phone]);
         }
         
