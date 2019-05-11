@@ -3,6 +3,7 @@
 namespace Gomobile\SDK;
 
 use Gomobile\HLP\NumberHelper;
+use Gomobile\HLP\ParameterHelper;
 
 class Call extends Base {
     
@@ -64,20 +65,23 @@ class Call extends Base {
     }
 
     public function makeSingleDynamicCall ($phoneNumber, $data=array()) {
+        
         if(NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
         if(!is_array($data))
             return $this->error("You must send a array of data");
-        
+
         //Check the parameters send
-        
+        $requestParameters = ParameterHelper::prepareParameters($data);
+        $requestParameters["phoneNumber"] = $phoneNumber;
+
         $url = parent::BASE_DOMAINE . parent::SINGLE_DYNAMIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
-                            'user' => json_encode($data)
+                            'user' => json_encode($requestParameters)
                         ]
                     ]);
         if($response->getStatusCode() == 200) {

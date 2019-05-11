@@ -21,4 +21,9 @@ class Gomobile {
         return $call;
     }
 
+    public function scenario () {
+        $scenario = new Scenario ($this->client, $this->username, $this->password);
+        return $scenario;
+    }
+
 }
