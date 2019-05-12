@@ -8,7 +8,7 @@ use Gomobile\HLP\ParameterHelper;
 class Call extends Base {
     
     /**
-     * Make a single Static Call
+     * Make single Static Call
      * @param string $phoneNumber
      * @param int $scenarioId
      * 
@@ -36,16 +36,24 @@ class Call extends Base {
         }
     }
 
+    /**
+     * Make multiple static call
+     * @param Array $phonesNumber
+     * @param int $scenarioId
+     *
+     * @return json
+     */
     public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
         // Check if the numbers are array 
         if(!is_array($phoneNumber))
             return $this->error("You must send an array of phone numbers");
+
+        if(!NumberHelper::isValidArrayPhoneNumbers($phonesNumber))
+            return $this->error("You have to provide a valid phone numbers");
         
         $tableNumber = [];
         foreach ($phonesNumber as $phone) {
-            if(!NumberHelper::isNationnalNumber($phone))
-                return $this->error("This phone number : $phone is not valid");
-            array_push($tableNumber, ["phoneNumber" => $phone]);
+            $tableNumber["phoneNumber"] = $phone;
         }
         
         $url = parent::BASE_DOMAINE . parent::MULTIPLE_STATIC_CALL;
@@ -64,15 +72,24 @@ class Call extends Base {
         }
     }
 
+    /**
+     * Make single dynamic call
+     * @param string $phoneNumber
+     * @param Array $data
+     *
+     * @return json
+     */
     public function makeSingleDynamicCall ($phoneNumber, $data=array()) {
         
         if(NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
         if(!is_array($data))
-            return $this->error("You must send a array of data");
+            return $this->error("You must send an array of data");
 
         //Check the parameters send
         $requestParameters = ParameterHelper::prepareParameters($data);
+        if(empty($requestParameters))
+            return $this->error("You must send one of these parameters : user_amount, date, user_agent");
         $requestParameters["phoneNumber"] = $phoneNumber;
 
         $url = parent::BASE_DOMAINE . parent::SINGLE_DYNAMIC_CALL;
@@ -91,4 +108,14 @@ class Call extends Base {
         }
     }
 
+    /**
+     * Make multiple dynamic call
+     * @param array $parameters
+     *
+     * @return json
+     */
+    public function makeMultipleDynamicCall ($data) {
+        if(!is_array($data))
+            return $this->error("You must send an array of data");
+    }
 }

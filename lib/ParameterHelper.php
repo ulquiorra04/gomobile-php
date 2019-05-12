@@ -7,6 +7,7 @@ class ParameterHelper {
 	const AMOUNT = "user_amount";
 	const DATE = "date";
 	const AGENT = "user_agent";
+	const PHONE = "phoneNumber";
 
 	public static function prepareParameters ($data) {
 		if(!is_array($data))

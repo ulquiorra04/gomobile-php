@@ -12,6 +12,7 @@ class Base {
     const SINGLE_STATIC_CALL = "backoffice/ScenariosUsers/makeSingleStaticCall";
     const MULTIPLE_STATIC_CALL = "backoffice/ScenariosUsers/makeMultipleStaticCall";
     const SINGLE_DYNAMIC_CALL = "backoffice/ScenariosUsers/makeSingleDynamicCall";
+    const MULTIPLE_DYNAMIC_CALL = "";
     
     public function __construct ($client, $username, $password) {
         $this->client = $client;

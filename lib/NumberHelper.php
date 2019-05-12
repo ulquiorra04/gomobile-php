@@ -40,13 +40,15 @@ class NumberHelper {
     }
 
     /**
-     * Check if multiple phone numbers in nationnal format
+     * Check an array of phone numbers is valid
      * 
      * @param array $phoneNumbers
      * @return bool
      */
     public static function isValidArrayPhoneNumbers ($phoneNumbers)
     {
+        if(!is_array($phoneNumbers))
+            return false;
         foreach ($phoneNumbers as $phone) {
             if(!self::isValidNationalNumber($phone))
                 return false;
