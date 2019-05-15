@@ -19,8 +19,9 @@ class Call extends Base {
         // Check if valid number
         if(!NumberHelper::isNationnalNumber($phoneNumber))
             return $this->error('You must use a valid moroccan phone number');
-
-        $url = parent::BASE_DOMAINE . parent::SINGLE_STATIC_CALL;
+        
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::SINGLE_STATIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
                             'login' => $this->username,
@@ -56,7 +57,8 @@ class Call extends Base {
             $tableNumber["phoneNumber"] = $phone;
         }
         
-        $url = parent::BASE_DOMAINE . parent::MULTIPLE_STATIC_CALL;
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::MULTIPLE_STATIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
                             'login' => $this->username,
@@ -75,11 +77,12 @@ class Call extends Base {
     /**
      * Make single dynamic call
      * @param string $phoneNumber
+     * @param int $scenarioId
      * @param Array $data
      *
      * @return json
      */
-    public function makeSingleDynamicCall ($phoneNumber, $data=array()) {
+    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
         
         if(NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
@@ -92,7 +95,8 @@ class Call extends Base {
             return $this->error("You must send one of these parameters : user_amount, date, user_agent");
         $requestParameters["phoneNumber"] = $phoneNumber;
 
-        $url = parent::BASE_DOMAINE . parent::SINGLE_DYNAMIC_CALL;
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::SINGLE_DYNAMIC_CALL;
         $response = $this->client->request('POST', $url, [
                         'form_params' => [
                             'login' => $this->username,
@@ -111,10 +115,11 @@ class Call extends Base {
     /**
      * Make multiple dynamic call
      * @param array $parameters
-     *
+     * @param int $scenarioId
+     * 
      * @return json
      */
-    public function makeMultipleDynamicCall ($data) {
+    public function makeMultipleDynamicCall ($scenarioId, $data) {
         if(!is_array($data))
             return $this->error("You must send an array of data");
     }
