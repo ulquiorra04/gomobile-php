@@ -84,7 +84,7 @@ class Call extends Base {
      */
     public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
         
-        if(NumberHelper::isValidNationalNumber($phoneNumber))
+        if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
         if(!is_array($data))
             return $this->error("You must send an array of data");

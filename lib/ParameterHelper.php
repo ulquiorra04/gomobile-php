@@ -13,12 +13,12 @@ class ParameterHelper {
 		if(!is_array($data))
 			return [];
 		$parameters = [];
-		if(array_key_exists(AMOUNT, $data))
-			$parameters[AMOUNT] = $data[AMOUNT];
-		if(array_key_exists(DATE, $data))
-			$parameters[DATE] = $data[DATE];
-		if(array_key_exists(AGENT, $data))
-			$parameters[AGENT] = $data[AGENT];
+		if(array_key_exists(self::AMOUNT, $data))
+			$parameters[self::AMOUNT] = $data[self::AMOUNT];
+		if(array_key_exists(self::DATE, $data))
+			$parameters[self::DATE] = $data[self::DATE];
+		if(array_key_exists(self::AGENT, $data))
+			$parameters[self::AGENT] = $data[self::AGENT];
 
 		return $parameters;
 	}
