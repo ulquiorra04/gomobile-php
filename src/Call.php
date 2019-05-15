@@ -2,8 +2,8 @@
 
 namespace Gomobile\SDK;
 
-use Gomobile\HLP\NumberHelper;
-use Gomobile\HLP\ParameterHelper;
+use Gomobile\SDK\HLP\NumberHelper;
+use Gomobile\SDK\HLP\ParameterHelper;
 
 class Call extends Base {
     
