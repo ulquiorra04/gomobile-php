@@ -4,8 +4,14 @@ namespace Gomobile\SDK;
 
 class Scenario extends Base {
 
+	/**
+	 * GET List of scenarios
+	 * 
+	 * @return Array of scenarios
+	 */
 	public function getScenarios () {
-		$url = parent::BASE_DOMAINE . parent::SINGLE_STATIC_CALL;
+		$url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+		$url .= parent::SCENARIO_LIST;
 		$response = $this->client->request('POST', $url, [
 						'form_params' => [
 							'login' => $this->username,
@@ -17,5 +23,109 @@ class Scenario extends Base {
 		else
 			return $this->error("error while processing");
 	}
+
+	/**
+	 * GET Single Scenario
+	 * 
+	 * @param int ScenarioId
+	 * @return Object Scenario
+	 */
+	public function getScenario ($scenarioId) {
+		$url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+		$url .= parent::SCENARIO_SINGLE;
+		$response = $this->client->request('POST', $url, [
+						'form_params' => [
+							'login' => $this->username,
+							'password' => $this->password,
+							'scenarioId' => $scenarioId
+						]
+					]);
+		if($response->getStatusCode() == 200)
+			return $this->success($response->getBody()->getContents());
+		else
+			return $this->error("error while processing");
+	}
+
+	/**
+	 * ADD Scenario method
+	 * 
+	 * @param string name The scenario name
+	 * @return int scenarioId
+	 */
+	public function addScenario ($name) {
+		$url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+		$url .= parent::SCENARIO_ADD;
+		$response = $this->client->request('POST', $url, [
+							'form_params' => [
+								'login' => $this->username,
+								'password' => $this->password,
+								'name' => $name
+							]
+						]);
+		if($response->getStatusCode() == 200)
+			return $this->success($response->getBody()->getContents());
+		else
+			return $this->error("error while processing");
+	}
+
+	public function getAudiosScenario ($scenarioId) {
+		$url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+		$url .= parent::SCENARIO_AUDIO_LIST;
+		$response = $this->client->request('POST', $url, [
+							'form_params' => [
+								'login' => $this->username,
+								'password' => $this->password,
+								'scenarioId' => $scenarioId
+							]
+						]);
+		if($response->getStatusCode() == 200)
+			return $this->success($response->getBody()->getContents());
+		else
+			return $this->error("error while processing");
+	}
+
+	public function addSimpleAudioScenario ($name, $order, $file_path, $scenarioId) {
+		$this->addAudioScenario($name, 1, $order, $file_path, $scenarioId);
+	}
+
+	public function addInteractiveAudioScenario ($name, $order, $file_path, $scenarioId) {
+		$this->addAudioScenario($name, 159, $order, $file_path, $scenarioId);
+	}
+
+	/**
+	 * ADD Dynamic Audio to Scenario
+	 * 
+	 * @param string name
+	 * @param int order in scenario
+	 * @param string filePath
+	 * @param int voice to be used SAMI => 2 | HANANE => 1
+	 * @param int metadata type of dynamic LIST => 1 | SUITE => 2 | NUMBER => 3 | DATE => 4
+	 */
+	public function addDynamicAudioScenario ($name, $order, $file_path, $scenarioId, $voiceId, $metadata) {
+		$this->addAudioScenario($name, 27, $order, $file_path, $scenarioId, $voiceId, $metadata);
+	}
+
+	private function addAudioScenario ($name, $type, $order, $file_path, $scenario, $voiceId = 0, $metadata = 0) {
+		$url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+		$url .= parent::SCENARIO_AUDIO_ADD;
+		$response = $this->client->request('POST', $url, [
+							'multipart' => [
+								'login' => $this->username,
+								'password' => $this->password,
+								'name' => $name,
+								'type' => $type,
+								'order' => $order,
+								[
+									'name' => 'audio_file',
+									'contents' => fopen($file_path)
+								]
+							]
+						]);
+		if($response->getStatusCode() == 200)
+			return $this->success($response->getBody()->getContents());
+		else
+			return $this->error("error while processing");
+	}
+
 
 }
