@@ -85,11 +85,17 @@ class Scenario extends Base {
 	}
 
 	public function addSimpleAudioScenario ($name, $order, $file_path, $scenarioId) {
-		$this->addAudioScenario($name, 1, $order, $file_path, $scenarioId);
+		if(file_exists($file_path))
+			return $this->addAudioScenario($name, 1, $order, $file_path, $scenarioId);
+		else
+			return $this->error("File not found");
 	}
 
 	public function addInteractiveAudioScenario ($name, $order, $file_path, $scenarioId) {
-		$this->addAudioScenario($name, 159, $order, $file_path, $scenarioId);
+		if(file_exists($file_path))
+			return $this->addAudioScenario($name, 159, $order, $file_path, $scenarioId);
+		else
+			return $this->error("File not found");
 	}
 
 	/**
@@ -102,7 +108,13 @@ class Scenario extends Base {
 	 * @param int metadata type of dynamic LIST => 1 | SUITE => 2 | NUMBER => 3 | DATE => 4
 	 */
 	public function addDynamicAudioScenario ($name, $order, $file_path, $scenarioId, $voiceId, $metadata) {
-		$this->addAudioScenario($name, 27, $order, $file_path, $scenarioId, $voiceId, $metadata);
+		$allowed_metadata = array(1, 2, 3, 4);
+		if(!in_array($metadata, $allowed_metadata))
+			return $this->error("Metadata not allowed");
+		if(file_exists($file_path))
+			return $this->addAudioScenario($name, 27, $order, $file_path, $scenarioId, $voiceId, $metadata);
+		else
+			return $this->error("File not found");
 	}
 
 	private function addAudioScenario ($name, $type, $order, $file_path, $scenario, $voiceId = 0, $metadata = 0) {
@@ -115,6 +127,8 @@ class Scenario extends Base {
 								'name' => $name,
 								'type' => $type,
 								'order' => $order,
+								'voice' => $voiceId,
+								'metadata' => $metadata,
 								[
 									'name' => 'audio_file',
 									'contents' => fopen($file_path)
