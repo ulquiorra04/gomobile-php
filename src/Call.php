@@ -11,10 +11,11 @@ class Call extends Base {
      * Make single Static Call
      * @param string $phoneNumber
      * @param int $scenarioId
+     * @param string $callBack
      * 
      * @return json
      */
-    public function makeSingleStaticCall ($phoneNumber, $scenarioId) {
+    public function makeSingleStaticCall ($phoneNumber, $scenarioId, $callBack) {
 
         // Check if valid number
         if(!NumberHelper::isNationnalNumber($phoneNumber))
@@ -27,6 +28,7 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
+                            'callBack' => $callBack,
                             'user' => json_encode(["phoneNumber" => $phoneNumber])
                         ]
                     ]);
@@ -44,7 +46,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
+    public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $callBack) {
         // Check if the numbers are array 
         if(!is_array($phoneNumber))
             return $this->error("You must send an array of phone numbers");
@@ -54,7 +56,8 @@ class Call extends Base {
         
         $tableNumber = [];
         foreach ($phonesNumber as $phone) {
-            $tableNumber["phoneNumber"] = $phone;
+            array_push($tableNumber, ["phoneNumber" => $phone]);
+            //$tableNumber["phoneNumber"] = $phone;
         }
         
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
@@ -64,6 +67,7 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
+                            'callBack' => $callBack,
                             'user' => json_encode($tableNumber)
                         ]
                     ]);
@@ -82,7 +86,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
+    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $callBack, $data=array()) {
         
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
@@ -102,6 +106,7 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
+                            'callBack' => $callBack,
                             'user' => json_encode($requestParameters)
                         ]
                     ]);
@@ -119,7 +124,7 @@ class Call extends Base {
      * 
      * @return json
      */
-    public function makeMultipleDynamicCall ($scenarioId, $data) {
+    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack, $data) {
         if(!is_array($data))
             return $this->error("You must send an array of data");
     }
