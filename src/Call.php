@@ -18,7 +18,7 @@ class Call extends Base {
     public function makeSingleStaticCall ($phoneNumber, $scenarioId, $callBack) {
 
         // Check if valid number
-        if(!NumberHelper::isNationnalNumber($phoneNumber))
+        if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error('You must use a valid moroccan phone number');
         
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
@@ -48,7 +48,7 @@ class Call extends Base {
      */
     public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $callBack) {
         // Check if the numbers are array 
-        if(!is_array($phoneNumber))
+        if(!is_array($phonesNumber))
             return $this->error("You must send an array of phone numbers");
 
         if(!NumberHelper::isValidArrayPhoneNumbers($phonesNumber))
@@ -119,13 +119,50 @@ class Call extends Base {
 
     /**
      * Make multiple dynamic call
-     * @param array $parameters
+     * @param array $PhonesNumber ["phone" => "0707071290", "user_amount" => 300]
      * @param int $scenarioId
+     * @param string $callBack
      * 
      * @return json
      */
-    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack, $data) {
-        if(!is_array($data))
-            return $this->error("You must send an array of data");
+    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack) {
+
+        $apiPhoneAarray = [];
+        // Check if the numbers are array 
+        if(!is_array($phonesNumber))
+            return $this->error("You must send an array of phone numbers");
+        
+        //Check the parameters send
+        foreach ($phonesNumber as $phone) {
+            // Check if the phone number is valid
+            if(!NumberHelper::isValidNationalNumber($phone["phone"]))
+                return $this->error("The phone number is not valid");
+            
+            // Check data send with phone number
+            $requestParameters = ParameterHelper::prepareParameters($phone);
+            if(empty($requestParameters))
+                return $this->error("You must send one of these parameters : user_amount, date, user_agent");
+            $requestParameters["phoneNumber"] = $phone["phone"];
+
+            array_push($apiPhoneAarray, $requestParameters);
+        }
+        
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::MULTIPLE_DYNAMIC_CALL;
+
+        $response = $this->client->request('POST', $url, [
+            'form_params' => [
+                'login' => $this->username,
+                'password' => $this->password,
+                'scenarioId' => $scenarioId,
+                'callBack' => $callBack,
+                'user' => json_encode($apiPhoneAarray)
+            ]
+        ]);
+        if($response->getStatusCode() == 200) {
+            return $this->success($response->getBody()->getContents());
+        } else {
+            return $this->error("error while processing");
+        }
     }
 }
