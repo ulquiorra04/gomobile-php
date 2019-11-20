@@ -9,8 +9,8 @@ class Base {
     protected $password;
     protected $demo;
 
-    const BASE_LOCAL_DOMAINE = "http://192.168.1.6/";
-    const BASE_GLOBAL_DOMAINE = "http://197.230.235.108/";
+    const BASE_LOCAL_DOMAINE = "http://172.30.30.30/";
+    const BASE_GLOBAL_DOMAINE = "https://www.osix.xyz/";
     const SINGLE_STATIC_CALL = "backoffice/ScenariosUsers/makeSingleStaticCall";
     const MULTIPLE_STATIC_CALL = "backoffice/ScenariosUsers/makeMultipleStaticCall";
     const SINGLE_DYNAMIC_CALL = "backoffice/ScenariosUsers/makeSingleDynamicCall";
