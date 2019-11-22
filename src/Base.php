@@ -20,6 +20,9 @@ class Base {
     const SCENARIO_ADD = "backoffice/Scenarios/addScenario";
     const SCENARIO_AUDIO_LIST = "";
     const SCENARIO_AUDIO_ADD = "";
+    const CAMPAIGN_LIST = "backoffice/Campaign/getCampaigns";
+    const CAMPAIGN_SINGLE = "backoffice/Campaign/getCampaigns";
+    const CAMPAIGN_VALIDATION = "backoffice/Campaign/validateCampaign";
     
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;
