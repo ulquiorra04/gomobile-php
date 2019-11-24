@@ -23,6 +23,7 @@ class Base {
     const CAMPAIGN_LIST = "backoffice/Campaign/getCampaigns";
     const CAMPAIGN_SINGLE = "backoffice/Campaign/getCampaigns";
     const CAMPAIGN_VALIDATION = "backoffice/Campaign/validateCampaign";
+    const LOG_LIST = "backoffice/Logs/getLogs"
     
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;

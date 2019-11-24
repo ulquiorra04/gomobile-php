@@ -5,7 +5,7 @@ namespace Gomobile\SDK;
 class Campaign extends Base {
 
 	/**
-	 *
+	 * Get the list of campaigns
 	 *
 	 */
 	public function getCampaigns ()
@@ -17,7 +17,6 @@ class Campaign extends Base {
             'form_params' => [
                 'login' => $this->username,
                 'password' => $this->password,
-                'campaignId' => $scenarioId
             ]
         ]);
         
@@ -34,7 +33,22 @@ class Campaign extends Base {
 	 */
 	public function getCampaign ($campaignId)
 	{
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::CAMPAIGN_LIST;
 
+        $response = $this->client->request('POST', $url, [
+            'form_params' => [
+                'login' => $this->username,
+                'password' => $this->password,
+                'campaignId' => $campaignId
+            ]
+        ]);
+        
+        if($response->getStatusCode() == 200) {
+            return $this->success($response->getBody()->getContents());
+        } else {
+            return $this->error("error while processing");
+        }
 	}
 
 
@@ -53,7 +67,7 @@ class Campaign extends Base {
             'form_params' => [
                 'login' => $this->username,
                 'password' => $this->password,
-                'campaignId' => $scenarioId
+                'campaignId' => $campaignId
             ]
         ]);
         

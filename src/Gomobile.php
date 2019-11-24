@@ -28,4 +28,16 @@ class Gomobile {
         return $scenario;
     }
 
+    public function campaign ()
+    {
+        $campaign = new Campaign($this->client, $this->username, $this->password, $this->demo);
+        return $campaign;
+    }
+
+    public function log ()
+    {
+        $log = new Log($this->client, $this->username, $this->password, $this->demo);
+        return $log;
+    }
+
 }
