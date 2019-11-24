@@ -8,6 +8,9 @@ class ParameterHelper {
 	const DATE = "date";
 	const AGENT = "user_agent";
 	const PHONE = "phoneNumber";
+	const VARIATION = "variation";
+	const POURCENT_ENTIER = "pourcent_entier";
+	const POURCENT_VIRGULE = "pourcent_virgule";
 
 	public static function prepareParameters ($data) {
 		if(!is_array($data))
@@ -19,6 +22,12 @@ class ParameterHelper {
 			$parameters[self::DATE] = $data[self::DATE];
 		if(array_key_exists(self::AGENT, $data))
 			$parameters[self::AGENT] = $data[self::AGENT];
+		if(array_key_exists(self::VARIATION, $data))
+			$parameters[self::VARIATION] = $data[self::VARIATION];
+		if(array_key_exists(self::POURCENT_ENTIER, $data))
+			$parameters[self::POURCENT_ENTIER] = $data[self::POURCENT_ENTIER];
+		if(array_key_exists(self::POURCENT_VIRGULE, $data))
+			$parameters[self::POURCENT_VIRGULE] = $data[self::POURCENT_VIRGULE];
 
 		return $parameters;
 	}

@@ -15,7 +15,7 @@ class Call extends Base {
      * 
      * @return json
      */
-    public function makeSingleStaticCall ($phoneNumber, $scenarioId, $callBack) {
+    public function makeSingleStaticCall ($phoneNumber, $scenarioId, $callBack, $requireValidation=0) {
 
         // Check if valid number
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
@@ -29,6 +29,7 @@ class Call extends Base {
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
                             'callBack' => $callBack,
+                            'requireValidation' => $requireValidation,
                             'user' => json_encode(["phoneNumber" => $phoneNumber])
                         ]
                     ]);
@@ -46,7 +47,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $callBack) {
+    public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $callBack, $requireValidation=0) {
         // Check if the numbers are array 
         if(!is_array($phonesNumber))
             return $this->error("You must send an array of phone numbers");
@@ -68,6 +69,7 @@ class Call extends Base {
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
                             'callBack' => $callBack,
+                            'requireValidation' => $requireValidation,
                             'user' => json_encode($tableNumber)
                         ]
                     ]);
@@ -86,7 +88,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $callBack, $data=array()) {
+    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $callBack, $data=array(), $requireValidation=0) {
         
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
@@ -107,6 +109,7 @@ class Call extends Base {
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
                             'callBack' => $callBack,
+                            'requireValidation' => $requireValidation,
                             'user' => json_encode($requestParameters)
                         ]
                     ]);
@@ -125,7 +128,7 @@ class Call extends Base {
      * 
      * @return json
      */
-    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack) {
+    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack, $requireValidation=0) {
 
         $apiPhoneAarray = [];
         // Check if the numbers are array 
@@ -156,6 +159,7 @@ class Call extends Base {
                 'password' => $this->password,
                 'scenarioId' => $scenarioId,
                 'callBack' => $callBack,
+                'requireValidation' => $requireValidation,
                 'user' => json_encode($apiPhoneAarray)
             ]
         ]);

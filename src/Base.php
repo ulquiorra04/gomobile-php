@@ -10,7 +10,7 @@ class Base {
     protected $demo;
 
     const BASE_LOCAL_DOMAINE = "http://172.30.30.30/";
-    const BASE_GLOBAL_DOMAINE = "https://www.osix.xyz/";
+    const BASE_GLOBAL_DOMAINE = "http://www.osix.xyz/";
     const SINGLE_STATIC_CALL = "backoffice/ScenariosUsers/makeSingleStaticCall";
     const MULTIPLE_STATIC_CALL = "backoffice/ScenariosUsers/makeMultipleStaticCall";
     const SINGLE_DYNAMIC_CALL = "backoffice/ScenariosUsers/makeSingleDynamicCall";
@@ -23,7 +23,7 @@ class Base {
     const CAMPAIGN_LIST = "backoffice/Campaign/getCampaigns";
     const CAMPAIGN_SINGLE = "backoffice/Campaign/getCampaigns";
     const CAMPAIGN_VALIDATION = "backoffice/Campaign/validateCampaign";
-    const LOG_LIST = "backoffice/Logs/getLogs"
+    const LOG_LIST = "backoffice/Logs/getLogs";
     
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;
