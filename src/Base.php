@@ -22,6 +22,7 @@ class Base {
     const SCENARIO_AUDIO_ADD = "";
     const CAMPAIGN_LIST = "backoffice/Campaign/getCampaigns";
     const CAMPAIGN_SINGLE = "backoffice/Campaign/getCampaigns";
+    const CAMPAIGN_SINGLE_NAME = "backoffice/Campaign/getCampaignsWithName";
     const CAMPAIGN_VALIDATION = "backoffice/Campaign/validateCampaign";
     const LOG_LIST = "backoffice/Logs/getLogs";
     

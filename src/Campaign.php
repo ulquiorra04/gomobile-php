@@ -34,7 +34,7 @@ class Campaign extends Base {
 	public function getCampaign ($campaignId)
 	{
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::CAMPAIGN_LIST;
+        $url .= parent::CAMPAIGN_SINGLE;
 
         $response = $this->client->request('POST', $url, [
             'form_params' => [
@@ -50,6 +50,30 @@ class Campaign extends Base {
             return $this->error("error while processing");
         }
 	}
+
+    /**
+     * get Single Campaign
+     * @param campaignId
+     */
+    public function getCampaignWithName ($campaign_name)
+    {
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::CAMPAIGN_SINGLE_NAME;
+
+        $response = $this->client->request('POST', $url, [
+            'form_params' => [
+                'login' => $this->username,
+                'password' => $this->password,
+                'campaign_name' => $campaign_name
+            ]
+        ]);
+        
+        if($response->getStatusCode() == 200) {
+            return $this->success($response->getBody()->getContents());
+        } else {
+            return $this->error("error while processing");
+        }
+    }
 
 
 	/**
