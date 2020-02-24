@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomobile\SDK\HLP;
+namespace Gomobile\GomobileBundle\lib;
 
 class ParameterHelper {
 

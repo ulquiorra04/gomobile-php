@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomobile\SDK;
+namespace Gomobile\GomobileBundle\src;
 
 use Gomobile\SDK\HLP\NumberHelper;
 use Gomobile\SDK\HLP\ParameterHelper;

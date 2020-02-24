@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomobile\SDK;
+namespace Gomobile\GomobileBundle\src;
 
 class Base {
 
@@ -20,10 +20,10 @@ class Base {
     const SCENARIO_ADD = "backoffice/Scenarios/addScenario";
     const SCENARIO_AUDIO_LIST = "";
     const SCENARIO_AUDIO_ADD = "";
-    const CAMPAIGN_LIST = "backoffice/Campaign/getCampaigns";
-    const CAMPAIGN_SINGLE = "backoffice/Campaign/getCampaigns";
-    const CAMPAIGN_SINGLE_NAME = "backoffice/Campaign/getCampaignsWithName";
-    const CAMPAIGN_VALIDATION = "backoffice/Campaign/validateCampaign";
+    const CAMPAIGN_LIST = "backoffice/Campaigns/getCampaigns";
+    const CAMPAIGN_SINGLE = "backoffice/Campaigns/getCampaigns";
+    const CAMPAIGN_SINGLE_NAME = "backoffice/Campaigns/getCampaignsWithName";
+    const CAMPAIGN_VALIDATION = "backoffice/Campaigns/validateCampaign";
     const LOG_LIST = "backoffice/Logs/getLogs";
     
     public function __construct ($client, $username, $password, $demo=false) {
