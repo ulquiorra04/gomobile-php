@@ -3,6 +3,7 @@
 namespace Gomobile\GomobileBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GomobileExtension extends Extension
 {
