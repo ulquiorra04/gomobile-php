@@ -15,6 +15,11 @@ class GomobileExtension extends Extension
 
 		$this->processConfiguration($configuration, $configs);
 
+		// Set parameters
+        $container->setParameter('gomobile.login', $config['login']);
+        $container->setParameter('gomobile.password', $config['password']);
+        $container->setParameter('gomobile.demo', $config['demo']);
+
 		// Load service file
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
