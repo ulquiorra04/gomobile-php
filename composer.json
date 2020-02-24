@@ -13,9 +13,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Gomobile\\SDK\\":"src/",
-            "Gomobile\\SDK\\HLP\\": "lib/",
-            "Gomobile\\SDK\\Tests\\": "tests/"
+            "Gomobile\\GomobileBundle\\": ""
         }
     },
     "require": {

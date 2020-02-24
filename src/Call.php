@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomobile\SDK;
+namespace Gomobile\GomobileBundle\src;
 
 use Gomobile\SDK\HLP\NumberHelper;
 use Gomobile\SDK\HLP\ParameterHelper;
@@ -15,7 +15,7 @@ class Call extends Base {
      * 
      * @return json
      */
-    public function makeSingleStaticCall ($phoneNumber, $scenarioId, $callBack, $requireValidation=0) {
+    public function makeSingleStaticCall ($phoneNumber, $scenarioId) {
 
         // Check if valid number
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
@@ -28,8 +28,6 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
-                            'callBack' => $callBack,
-                            'requireValidation' => $requireValidation,
                             'user' => json_encode(["phoneNumber" => $phoneNumber])
                         ]
                     ]);
@@ -47,7 +45,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $callBack, $requireValidation=0) {
+    public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
         // Check if the numbers are array 
         if(!is_array($phonesNumber))
             return $this->error("You must send an array of phone numbers");
@@ -68,8 +66,6 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
-                            'callBack' => $callBack,
-                            'requireValidation' => $requireValidation,
                             'user' => json_encode($tableNumber)
                         ]
                     ]);
@@ -88,7 +84,7 @@ class Call extends Base {
      *
      * @return json
      */
-    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $callBack, $data=array(), $requireValidation=0) {
+    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
         
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
@@ -108,8 +104,6 @@ class Call extends Base {
                             'login' => $this->username,
                             'password' => $this->password,
                             'scenarioId' => $scenarioId,
-                            'callBack' => $callBack,
-                            'requireValidation' => $requireValidation,
                             'user' => json_encode($requestParameters)
                         ]
                     ]);
@@ -128,7 +122,7 @@ class Call extends Base {
      * 
      * @return json
      */
-    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $callBack, $requireValidation=0) {
+    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId) {
 
         $apiPhoneAarray = [];
         // Check if the numbers are array 
@@ -157,9 +151,7 @@ class Call extends Base {
             'form_params' => [
                 'login' => $this->username,
                 'password' => $this->password,
-                'scenarioId' => $scenarioId,
-                'callBack' => $callBack,
-                'requireValidation' => $requireValidation,
+                'scenarioId' => $scenarioId
                 'user' => json_encode($apiPhoneAarray)
             ]
         ]);
