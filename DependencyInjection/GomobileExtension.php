@@ -13,7 +13,7 @@ class GomobileExtension extends Extension
 	{
 		$configuration = new Configuration ();
 
-		$this->processConfiguration($configuration, $configs);
+		$config = $this->processConfiguration($configuration, $configs);
 
 		// Set parameters
         $container->setParameter('gomobile.login', $config['login']);
