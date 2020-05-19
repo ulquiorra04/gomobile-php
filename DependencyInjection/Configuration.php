@@ -15,6 +15,7 @@ class Configuration implements ConfigurationInterface
 		$rootNode->children()
 				 ->scalarNode('login')->defaultValue('')->end()
 				 ->scalarNode('password')->defaultValue('')->end()
+				 ->booleanNode('demo')->defaultFalse()->end()
 				 ->end();
 				 
 		return $treeBuilder;
