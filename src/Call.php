@@ -6,13 +6,13 @@ use Gomobile\SDK\HLP\NumberHelper;
 use Gomobile\SDK\HLP\ParameterHelper;
 
 class Call extends Base {
-    
+
     /**
      * Make single Static Call
      * @param string $phoneNumber
      * @param int $scenarioId
      * @param string $callBack
-     * 
+     *
      * @return json
      */
     public function makeSingleStaticCall ($phoneNumber, $scenarioId) {
@@ -20,7 +20,7 @@ class Call extends Base {
         // Check if valid number
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error('You must use a valid moroccan phone number');
-        
+
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::SINGLE_STATIC_CALL;
         $response = $this->client->request('POST', $url, [
@@ -46,19 +46,19 @@ class Call extends Base {
      * @return json
      */
     public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
-        // Check if the numbers are array 
+        // Check if the numbers are array
         if(!is_array($phonesNumber))
             return $this->error("You must send an array of phone numbers");
 
         if(!NumberHelper::isValidArrayPhoneNumbers($phonesNumber))
             return $this->error("You have to provide a valid phone numbers");
-        
+
         $tableNumber = [];
         foreach ($phonesNumber as $phone) {
             array_push($tableNumber, ["phoneNumber" => $phone]);
             //$tableNumber["phoneNumber"] = $phone;
         }
-        
+
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::MULTIPLE_STATIC_CALL;
         $response = $this->client->request('POST', $url, [
@@ -85,7 +85,7 @@ class Call extends Base {
      * @return json
      */
     public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
-        
+
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
         if(!is_array($data))
@@ -119,22 +119,22 @@ class Call extends Base {
      * @param array $PhonesNumber ["phone" => "0707071290", "user_amount" => 300]
      * @param int $scenarioId
      * @param string $callBack
-     * 
+     *
      * @return json
      */
     public function makeMultipleDynamicCall ($phonesNumber, $scenarioId) {
 
         $apiPhoneAarray = [];
-        // Check if the numbers are array 
+        // Check if the numbers are array
         if(!is_array($phonesNumber))
             return $this->error("You must send an array of phone numbers");
-        
+
         //Check the parameters send
         foreach ($phonesNumber as $phone) {
             // Check if the phone number is valid
             if(!NumberHelper::isValidNationalNumber($phone["phone"]))
                 return $this->error("The phone number is not valid");
-            
+
             // Check data send with phone number
             $requestParameters = ParameterHelper::prepareParameters($phone);
             if(empty($requestParameters))
@@ -143,7 +143,7 @@ class Call extends Base {
 
             array_push($apiPhoneAarray, $requestParameters);
         }
-        
+
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::MULTIPLE_DYNAMIC_CALL;
 
@@ -151,7 +151,7 @@ class Call extends Base {
             'form_params' => [
                 'login' => $this->username,
                 'password' => $this->password,
-                'scenarioId' => $scenarioId
+                'scenarioId' => $scenarioId,
                 'user' => json_encode($apiPhoneAarray)
             ]
         ]);
