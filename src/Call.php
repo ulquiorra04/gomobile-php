@@ -154,7 +154,7 @@ class Call extends Base {
 
         // Prepare to make the call
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::SINGLE_DYNAMIC_CALL;
+        $url .= parent::MULTIPLE_DYNAMIC_CALL;
         $params = [
             'login' => $this->username,
             'password' => $this->password,
