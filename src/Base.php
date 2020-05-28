@@ -25,7 +25,7 @@ class Base {
     const CAMPAIGN_SINGLE_NAME = "backoffice/Campaigns/getCampaignsWithName";
     const CAMPAIGN_VALIDATION = "backoffice/Campaigns/validateCampaign";
     const LOG_LIST = "backoffice/Logs/getLogs";
-    
+
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;
         $this->username = $username;
@@ -33,17 +33,18 @@ class Base {
         $this->demo = $demo;
     }
 
-    public function error ($data) {
+    public function error ($message) {
         return [
-            'status' => 'error',
-            'message' => $data
+            "status" => 0,
+            "description" => $message,
         ];
     }
 
-    public function success ($data) {
+    public function success ($message, $options) {
         return [
-            'status' => 'success',
-            'message' => $data
+            'status' => 1,
+            'description' => $message,
+            "options" => $options
         ];
     }
 

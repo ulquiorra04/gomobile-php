@@ -13,7 +13,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Gomobile\\GomobileBundle\\": ""
+            "Gomobile\\GomobileBundle\\": "",
+            "Gomobile\\GomobileBundle\\Test\\": "tests"
         }
     },
     "require": {

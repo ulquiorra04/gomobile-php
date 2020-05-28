@@ -2,10 +2,15 @@
 
 namespace Gomobile\GomobileBundle\src;
 
-use Gomobile\SDK\HLP\NumberHelper;
-use Gomobile\SDK\HLP\ParameterHelper;
+use Gomobile\GomobileBundle\lib\NumberHelper;
+use Gomobile\GomobileBundle\lib\ParameterHelper;
 
 class Call extends Base {
+    private $parameterHelper;
+
+    public __construct () {
+        $this->parameterHelper = new ParameterHelper
+    }
 
     /**
      * Make single Static Call
@@ -32,7 +37,7 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody()->getContents());
+            return $this->success("Your calls are in process", $response->getBody()->getContents());
         } else {
             return $this->error("error while processing");
         }
@@ -70,7 +75,7 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody()->getContents());
+            return $this->success("Your calls are in process", $response->getBody()->getContents());
         } else {
             return $this->error("error while processing");
         }
@@ -80,7 +85,7 @@ class Call extends Base {
      * Make single dynamic call
      * @param string $phoneNumber
      * @param int $scenarioId
-     * @param Array $data
+     * @param Array $data [user_amount => 300]
      *
      * @return json
      */
@@ -108,7 +113,7 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody()->getContents());
+            return $this->success("Your calls are in process", $response->getBody()->getContents());
         } else {
             return $this->error("error while processing");
         }
@@ -116,50 +121,55 @@ class Call extends Base {
 
     /**
      * Make multiple dynamic call
-     * @param array $PhonesNumber ["phone" => "0707071290", "user_amount" => 300]
+     * @param array $PhonesNumber [{"phone": "0707071290", "user_amount": 300}, {"phone": "0707071290", "user_amount": 200}]
      * @param int $scenarioId
-     * @param string $callBack
+     * @param array $options [sda => "05XXXXXXXX"]
      *
      * @return json
      */
-    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId) {
+    public function makeMultipleDynamicCall ($phonesNumber, $scenarioId, $options) {
+        $phonesNumber = json_decode($phonesNumber);
 
-        $apiPhoneAarray = [];
-        // Check if the numbers are array
-        if(!is_array($phonesNumber))
-            return $this->error("You must send an array of phone numbers");
+        // Check if we send array of data & is not empty
+        if(!is_array($phonesNumber) || empty($phonesNumber))
+            return $this->error("Either you provided an empty table or not a table");
+        // Check the phone numbers send
 
-        //Check the parameters send
-        foreach ($phonesNumber as $phone) {
-            // Check if the phone number is valid
-            if(!NumberHelper::isValidNationalNumber($phone["phone"]))
-                return $this->error("The phone number is not valid");
-
-            // Check data send with phone number
-            $requestParameters = ParameterHelper::prepareParameters($phone);
-            if(empty($requestParameters))
-                return $this->error("You must send one of these parameters : user_amount, date, user_agent");
-            $requestParameters["phoneNumber"] = $phone["phone"];
-
-            array_push($apiPhoneAarray, $requestParameters);
+        foreach ($phonesNumber as $phoneNumber) {
+            if(is_string($phoneNumber))
+                $phoneNumber = json_decode($phoneNumber);
+            // check if the phone property exists
+            if(!property_exists($phoneNumber, "phone")){
+                return $this->error("Please provide a phone property for the object");
+            }elseif(!NumberHelper::isValidNationalNumber($phoneNumber->phone)){
+                // Check if the phone is in correct format
+                return $this->error("incorrect format for phone number $phoneNumber->phone");
+            }
+            // check if the parameters are supported
+            if(!$this->parameterHelper->isSupportedParameters($phoneNumber))
+                return $this->error("You have send a non supported parameter");
+            //return $this->success("data correct", $phoneNumber);
         }
 
+        // Prepare to make the call
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::MULTIPLE_DYNAMIC_CALL;
+        $url .= parent::SINGLE_DYNAMIC_CALL;
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'user' => json_encode($phonesNumber);
+        ];
+        if(isset($options['sda']))
+            array_push($params, $options['sda']);
+        if(isset($options['call_date_time']))
+            array_push($params, $options['call_date_time']);
+        $response = $this->client->request('POST', $url, ['form_params' => $params]);
 
-        $response = $this->client->request('POST', $url, [
-            'form_params' => [
-                'login' => $this->username,
-                'password' => $this->password,
-                'scenarioId' => $scenarioId,
-                'user' => json_encode($apiPhoneAarray)
-            ]
-        ]);
-        if($response->getStatusCode() == 200) {
-            return $this->success($response->getBody()->getContents());
-        } else {
+        if($response->getStatusCode() == 200)
+            return $this->success("Your calls are in process", $response->getBody()->getContents());
+        else
             return $this->error("error while processing");
-        }
     }
 
 }

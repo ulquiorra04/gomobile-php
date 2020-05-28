@@ -16,6 +16,8 @@ class ParameterHelper {
 	const POURCENT_ENTIER = "pourcent_entier";
 	const POURCENT_VIRGULE = "pourcent_virgule";
 
+	private $supportedParameters = array("phone", "source", "agence", "date", "heure", "cadeau", "user_amount", "");
+
 	public static function prepareParameters ($data) {
 		if(!is_array($data))
 			return [];
@@ -40,5 +42,32 @@ class ParameterHelper {
 			$parameters[self::POURCENT_VIRGULE] = $data[self::POURCENT_VIRGULE];
 
 		return $parameters;
+	}
+
+	/**
+	 * Convert object property to array
+	 *
+	 * @param Object $object
+	 * @return array []
+	 */
+	 public static function convertObjectPropertyToArray (Object $object): array {
+		 $properties = get_object_vars($object);
+		 return array_keys($properties);
+	 }
+
+	/**
+	 * Ckeck if the parameters send are supported
+	 * @param Object $object
+	 *
+	 * @return boolean true: if supported | false: if not
+	 */
+	public function isSupportedParameters ($object) {
+		$parameters = self::convertObjectPropertyToArray($object);
+
+		foreach ($parameters as $parameter) {
+			if(!in_array($parameter, $this->supportedParameters))
+				return false;
+		}
+		return true;
 	}
 }
