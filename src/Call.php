@@ -8,8 +8,9 @@ use Gomobile\GomobileBundle\lib\ParameterHelper;
 class Call extends Base {
     private $parameterHelper;
 
-    public __construct () {
-        $this->parameterHelper = new ParameterHelper
+    public function __construct ($client, $username, $password, $demo=false) {
+        $this->parameterHelper = new ParameterHelper();
+        parent::__construct($client, $username, $password, $demo);
     }
 
     /**
@@ -139,11 +140,11 @@ class Call extends Base {
             if(is_string($phoneNumber))
                 $phoneNumber = json_decode($phoneNumber);
             // check if the phone property exists
-            if(!property_exists($phoneNumber, "phone")){
+            if(!property_exists($phoneNumber, "phoneNumber")){
                 return $this->error("Please provide a phone property for the object");
-            }elseif(!NumberHelper::isValidNationalNumber($phoneNumber->phone)){
+            }elseif(!NumberHelper::isValidNationalNumber($phoneNumber->phoneNumber)){
                 // Check if the phone is in correct format
-                return $this->error("incorrect format for phone number $phoneNumber->phone");
+                return $this->error("incorrect format for phone number $phoneNumber->phoneNumber");
             }
             // check if the parameters are supported
             if(!$this->parameterHelper->isSupportedParameters($phoneNumber))
@@ -158,7 +159,7 @@ class Call extends Base {
             'login' => $this->username,
             'password' => $this->password,
             'scenarioId' => $scenarioId,
-            'user' => json_encode($phonesNumber);
+            'user' => json_encode($phonesNumber)
         ];
         if(isset($options['sda']))
             array_push($params, $options['sda']);

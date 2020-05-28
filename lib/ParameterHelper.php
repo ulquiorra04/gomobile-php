@@ -16,7 +16,7 @@ class ParameterHelper {
 	const POURCENT_ENTIER = "pourcent_entier";
 	const POURCENT_VIRGULE = "pourcent_virgule";
 
-	private $supportedParameters = array("phone", "source", "agence", "date", "heure", "cadeau", "user_amount", "");
+	private $supportedParameters = array("phoneNumber", "source", "agence", "date", "heure", "cadeau", "user_amount", "");
 
 	public static function prepareParameters ($data) {
 		if(!is_array($data))
