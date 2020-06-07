@@ -122,7 +122,7 @@ class Call extends Base {
 
     /**
      * Make multiple dynamic call
-     * @param array $PhonesNumber [{"phone": "0707071290", "user_amount": 300}, {"phone": "0707071290", "user_amount": 200}]
+     * @param array $PhonesNumber [{"phoneNumber": "0707071290", "user_amount": 300}, {"phoneNumber": "0707071290", "user_amount": 200}]
      * @param int $scenarioId
      * @param array $options [sda => "05XXXXXXXX"]
      *
@@ -141,7 +141,7 @@ class Call extends Base {
                 $phoneNumber = json_decode($phoneNumber);
             // check if the phone property exists
             if(!property_exists($phoneNumber, "phoneNumber")){
-                return $this->error("Please provide a phone property for the object");
+                return $this->error("Please provide a phoneNumber property for the object");
             }elseif(!NumberHelper::isValidNationalNumber($phoneNumber->phoneNumber)){
                 // Check if the phone is in correct format
                 return $this->error("incorrect format for phone number $phoneNumber->phoneNumber");

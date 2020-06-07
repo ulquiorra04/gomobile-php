@@ -25,6 +25,7 @@ class Base {
     const CAMPAIGN_SINGLE_NAME = "backoffice/Campaigns/getCampaignsWithName";
     const CAMPAIGN_VALIDATION = "backoffice/Campaigns/validateCampaign";
     const LOG_LIST = "backoffice/Logs/getLogs";
+    const BULK_FILE_WRITER = "backoffice/ScenariosUsers/saveSUData";
 
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;
