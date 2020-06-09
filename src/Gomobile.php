@@ -40,4 +40,10 @@ class Gomobile {
         return $log;
     }
 
+    public function buffer()
+    {
+        $buffer = new Buffer($this->client, $this->username, $this->password, $this->demo);
+        return $buffer;
+    }
+
 }

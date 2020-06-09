@@ -45,7 +45,7 @@ class Buffer extends Base {
                 'login' => $this->username,
                 'password' => $this->password,
                 'scenarioId' => $scenarioId,
-                'user' => json_encode($phonesNumber)
+                'user' => json_encode($user)
             ];
             if(isset($options['sda']))
                 $params["sda"] = $options['sda'];
