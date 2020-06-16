@@ -37,28 +37,28 @@ class Buffer extends Base {
                 return $this->error("incorrect format for phone number $user->phoneNumber");
             if(!$this->parameterHelper->isSupportedParameters($user))
                 return $this->error("You have send a non supported parameter");
-
-            // Prepare to make the call
-            $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-            $url .= parent::BULK_FILE_WRITER;
-            $params = [
-                'login' => $this->username,
-                'password' => $this->password,
-                'scenarioId' => $scenarioId,
-                'user' => json_encode($user)
-            ];
-            if(isset($options['sda']))
-                $params["sda"] = $options['sda'];
-            if(isset($options['call_date_time']))
-                $params["callDateTime"] = $options['call_date_time'];
-            if(isset($options['campaign_name']))
-                $params["campaignName"] = $options['campaign_name'];
-            $response = $this->client->request('POST', $url, ['form_params' => $params]);
-
-            if($response->getStatusCode() == 200)
-                return $this->success("Your calls are in process", $response->getBody()->getContents());
-            else
-                return $this->error("error while processing");
         }
+        // Prepare to make the call
+        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
+        $url .= parent::BULK_FILE_WRITER;
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'user' => json_encode($users)
+        ];
+        if(isset($options['sda']))
+            $params["sda"] = $options['sda'];
+        if(isset($options['call_date_time']))
+            $params["callDateTime"] = $options['call_date_time'];
+        if(isset($options['campaign_name']))
+            $params["campaignName"] = $options['campaign_name'];
+        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+
+        if($response->getStatusCode() == 200)
+            return $this->success("Your calls are in process", $response->getBody()->getContents());
+        else
+            return $this->error("error while processing");
+
     }
 }
