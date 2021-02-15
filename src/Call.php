@@ -38,7 +38,11 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success("Your calls are in process", $response->getBody()->getContents());
+            $result = json_decode($response->getBody()->getContents());
+            if($result->status == 1)
+                return $this->success($result->message, $result->data);
+            else
+                return $this->error($result->message);
         } else {
             return $this->error("error while processing");
         }
@@ -76,7 +80,11 @@ class Call extends Base {
                         ]
                     ]);
         if($response->getStatusCode() == 200) {
-            return $this->success("Your calls are in process", $response->getBody()->getContents());
+            $result = json_decode($response->getBody()->getContents());
+            if($result->status == 1)
+                return $this->success($result->message, $result->data);
+            else
+                return $this->error($result->message);
         } else {
             return $this->error("error while processing");
         }

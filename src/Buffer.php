@@ -45,7 +45,7 @@ class Buffer extends Base {
             'login' => $this->username,
             'password' => $this->password,
             'scenarioId' => $scenarioId,
-            'user' => json_encode($users)
+            'users' => json_encode($users)
         ];
         if(isset($options['sda']))
             $params["sda"] = $options['sda'];
@@ -55,9 +55,14 @@ class Buffer extends Base {
             $params["campaignName"] = $options['campaign_name'];
         $response = $this->client->request('POST', $url, ['form_params' => $params]);
 
-        if($response->getStatusCode() == 200)
-            return $this->success("Your calls are in process", $response->getBody()->getContents());
-        else
+        if($response->getStatusCode() == 200) {
+            $result = json_decode($response->getBody()->getContents());
+            if($result->status == 0)
+                return $this->error($result->message);
+            else
+                return $this->success($result->message, $result->data);
+            
+        }else
             return $this->error("error while processing");
 
     }

@@ -18,10 +18,15 @@ class Scenario extends Base {
 							'password' => $this->password
 						]
 					]);
-		if($response->getStatusCode() == 200)
-			return $this->success($response->getBody()->getContents());
-		else
+		if($response->getStatusCode() == 200) {
+			$result = json_decode($response->getBody()->getContents());
+			if($result->status == 1)
+				return $this->success($result->message, $result->data);
+			else
+				return $this->error($result->message);
+		} else {
 			return $this->error("error while processing");
+		}
 	}
 
 	/**
@@ -40,10 +45,15 @@ class Scenario extends Base {
 							'scenarioId' => $scenarioId
 						]
 					]);
-		if($response->getStatusCode() == 200)
-			return $this->success($response->getBody()->getContents());
-		else
+		if($response->getStatusCode() == 200) {
+			$result = json_decode($response->getBody()->getContents());
+			if($result->status == 1)
+				return $this->success($result->message, $result->data);
+			else
+				return $this->error($result->message);
+		} else {
 			return $this->error("error while processing");
+		}
 	}
 
 	/**
@@ -62,10 +72,15 @@ class Scenario extends Base {
 								'name' => $name
 							]
 						]);
-		if($response->getStatusCode() == 200)
-			return $this->success($response->getBody()->getContents());
-		else
+		if($response->getStatusCode() == 200) {
+			$result = json_decode($response->getBody()->getContents());
+			if($result->status == 1)
+				return $this->success($result->message, $result->data);
+			else
+				return $this->error($result->message);
+		} else {
 			return $this->error("error while processing");
+		}
 	}
 
 	public function getAudiosScenario ($scenarioId) {
@@ -78,10 +93,15 @@ class Scenario extends Base {
 								'scenarioId' => $scenarioId
 							]
 						]);
-		if($response->getStatusCode() == 200)
-			return $this->success($response->getBody()->getContents());
-		else
+		if($response->getStatusCode() == 200) {
+			$result = json_decode($response->getBody()->getContents());
+			if($result->status == 1)
+				return $this->success($result->message, $result->data);
+			else
+				return $this->error($result->message);
+		} else {
 			return $this->error("error while processing");
+		}
 	}
 
 	public function addSimpleAudioScenario ($name, $order, $file_path, $scenarioId) {
@@ -131,14 +151,19 @@ class Scenario extends Base {
 								'metadata' => $metadata,
 								[
 									'name' => 'audio_file',
-									'contents' => fopen($file_path)
+									'contents' => fopen($file_path, "r")
 								]
 							]
 						]);
-		if($response->getStatusCode() == 200)
-			return $this->success($response->getBody()->getContents());
-		else
+		if($response->getStatusCode() == 200) {
+			$result = json_decode($response->getBody()->getContents());
+			if($result->status == 1)
+				return $this->success($result->message, $result->data);
+			else
+				return $this->error($result->message);
+		} else {
 			return $this->error("error while processing");
+		}
 	}
 
 
