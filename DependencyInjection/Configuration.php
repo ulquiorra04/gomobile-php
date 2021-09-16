@@ -9,8 +9,8 @@ class Configuration implements ConfigurationInterface
 {
 	public function getConfigTreeBuilder ()
 	{
-		$treeBuilder = new TreeBuilder();
-		$rootNode = $treeBuilder->root('gomobile');
+		$treeBuilder = new TreeBuilder("gomobile");
+		$rootNode = $treeBuilder->getRootNode();
 
 		$rootNode->children()
 				 ->scalarNode('login')->defaultValue('')->end()
