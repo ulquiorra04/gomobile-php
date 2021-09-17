@@ -126,6 +126,8 @@ class Scenario extends Base {
 	 * @param string filePath
 	 * @param int voice to be used SAMI => 2 | HANANE => 1
 	 * @param int metadata type of dynamic LIST => 1 | SUITE => 2 | NUMBER => 3 | DATE => 4
+     *
+     * @return array
 	 */
 	public function addDynamicAudioScenario ($name, $order, $file_path, $scenarioId, $voiceId, $metadata) {
 		$allowed_metadata = array(1, 2, 3, 4);
@@ -142,14 +144,14 @@ class Scenario extends Base {
 		$url .= parent::SCENARIO_AUDIO_ADD;
 		$response = $this->client->request('POST', $url, [
 							'multipart' => [
-								'login' => $this->username,
-								'password' => $this->password,
-								'scenarioId' => $scenario,
-								'name' => $name,
-								'type' => $type,
-								'order' => $order,
-								'voice' => $voiceId,
-								'metadata' => $metadata,
+							    ['name' => 'login', 'contents' => $this->username],
+                                ['name' => 'password', 'contents' => $this->password],
+                                ['name' => 'scenarioId', 'contents' => $scenario],
+                                ['name' => 'name', 'contents' => $name],
+                                ['name' => 'type', 'contents' => $type],
+                                ['name' => 'order', 'contents' => $order],
+                                ['name' => 'voice', 'contents' => $voiceId],
+                                ['name' => 'metadata', 'contents' => $metadata],
 								[
 									'name' => 'audio_file',
 									'contents' => fopen($file_path, "r")
