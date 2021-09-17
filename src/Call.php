@@ -15,13 +15,14 @@ class Call extends Base {
 
     /**
      * Make single Static Call
-     * @param string $phoneNumber
-     * @param int $scenarioId
-     * @param string $callBack
+     * @param string $phoneNumber "0707071290"
+     * @param string $tokenMatcher "XXXXXXXXX"
+     * @param int $scenarioId XXXX
+     * @param array $options ["sda" => "05XXXXXXXX", "call_date_time" => "XXXXXXXXXX", "campaignName" => "XXXXXXXXXXXX"]
      *
      * @return json
      */
-    public function makeSingleStaticCall ($phoneNumber, $scenarioId) {
+    public function makeSingleStaticCall ($phoneNumber, $tokenMatcher, $scenarioId, $options = array()) {
 
         // Check if valid number
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
@@ -29,14 +30,21 @@ class Call extends Base {
 
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::SINGLE_STATIC_CALL;
-        $response = $this->client->request('POST', $url, [
-                        'form_params' => [
-                            'login' => $this->username,
-                            'password' => $this->password,
-                            'scenarioId' => $scenarioId,
-                            'user' => json_encode(["phoneNumber" => $phoneNumber])
-                        ]
-                    ]);
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'user' => json_encode(["phoneNumber" => $phoneNumber, "tokenMatcher" => $tokenMatcher])
+        ];
+
+        if(isset($options['sda']))
+            $params["sda"] = $options['sda'];
+        if(isset($options['call_date_time']))
+            $params["callDateTime"] = $options['call_date_time'];
+        if(isset($options['campaign_name']))
+            $params["campaignName"] = $options['campaign_name'];
+
+        $response = $this->client->request('POST', $url, ['form_params' => $params]);
         if($response->getStatusCode() == 200) {
             $result = json_decode($response->getBody()->getContents());
             if($result->status == 1)
@@ -50,35 +58,56 @@ class Call extends Base {
 
     /**
      * Make multiple static call
-     * @param Array $phonesNumber
+     * @param Array $phonesNumber [{"phoneNumber": "0707071290", "tokenMatcher": "XXXXXXXXXXXXX"}, {"phoneNumber": "0707071290", "tokenMatcher": "XXXXXXXXXXXXX"}]
      * @param int $scenarioId
+     * @param Array $options
      *
      * @return json
      */
-    public function makeMultipleStaticCall ($phonesNumber, $scenarioId) {
+    public function makeMultipleStaticCall ($phonesNumber, $scenarioId, $options) {
+
+        $phonesNumber = json_decode($phonesNumber);
+
         // Check if the numbers are array
-        if(!is_array($phonesNumber))
-            return $this->error("You must send an array of phone numbers");
+        if(!is_array($phonesNumber) || empty($phonesNumber))
+            return $this->error("Either you provided an empty table or not a table");
 
         if(!NumberHelper::isValidArrayPhoneNumbers($phonesNumber))
             return $this->error("You have to provide a valid phone numbers");
 
-        $tableNumber = [];
-        foreach ($phonesNumber as $phone) {
-            array_push($tableNumber, ["phoneNumber" => $phone]);
-            //$tableNumber["phoneNumber"] = $phone;
+        foreach ($phonesNumber as $phoneNumber) {
+            if(is_string($phoneNumber))
+                $phoneNumber = json_decode($phoneNumber);
+
+            if(!property_exists($phoneNumber, "phoneNumber"))
+                return $this->error("Please provide a phoneNumber property for the object");
+
+            if(NumberHelper::isValidNationalNumber($phoneNumber->phoneNumber))
+                return $this->error("incorrect format for phone number $phoneNumber->phoneNumber");
+
+            if(!$this->parameterHelper->isSupportedParameters($phoneNumber))
+                return $this->error("You have send a non supported parameter");
         }
+
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'users' => json_encode($phonesNumber)
+        ];
+
+        if(isset($options['sda']))
+            $params["sda"] = $options['sda'];
+        if(isset($options['call_date_time']))
+            $params["callDateTime"] = $options['call_date_time'];
+        if(isset($options['campaign_name']))
+            $params["campaignName"] = $options['campaign_name'];
+
 
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::MULTIPLE_STATIC_CALL;
-        $response = $this->client->request('POST', $url, [
-                        'form_params' => [
-                            'login' => $this->username,
-                            'password' => $this->password,
-                            'scenarioId' => $scenarioId,
-                            'user' => json_encode($tableNumber)
-                        ]
-                    ]);
+        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+
         if($response->getStatusCode() == 200) {
             $result = json_decode($response->getBody()->getContents());
             if($result->status == 1)
@@ -93,12 +122,14 @@ class Call extends Base {
     /**
      * Make single dynamic call
      * @param string $phoneNumber
+     * @param string $tokenMatcher
      * @param int $scenarioId
-     * @param Array $data [user_amount => 300]
+     * @param array $data ["user_amount" => 300, "user_identify" => "XXXXXXXX"]
+     * @param array $options ["sda" => "05XXXXXXXX", "call_date_time" => "XXXXXXXXXX", "campaignName" => "XXXXXXXXXXXX"]
      *
      * @return json
      */
-    public function makeSingleDynamicCall ($phoneNumber, $scenarioId, $data=array()) {
+    public function makeSingleDynamicCall ($phoneNumber, $tokenMatcher, $scenarioId, $data = [], $options = []) {
 
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error("The phone number is not valid");
@@ -113,16 +144,29 @@ class Call extends Base {
 
         $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         $url .= parent::SINGLE_DYNAMIC_CALL;
-        $response = $this->client->request('POST', $url, [
-                        'form_params' => [
-                            'login' => $this->username,
-                            'password' => $this->password,
-                            'scenarioId' => $scenarioId,
-                            'user' => json_encode($requestParameters)
-                        ]
-                    ]);
+
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'user' => json_encode($requestParameters)
+        ];
+
+        if(isset($options['sda']))
+            $params["sda"] = $options['sda'];
+        if(isset($options['call_date_time']))
+            $params["callDateTime"] = $options['call_date_time'];
+        if(isset($options['campaign_name']))
+            $params["campaignName"] = $options['campaign_name'];
+
+        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+
         if($response->getStatusCode() == 200) {
-            return $this->success("Your calls are in process", $response->getBody()->getContents());
+            $result = $response->getBody()->getContents();
+            if($result->status == 1)
+                return $this->success($result->message, $result->data);
+            else
+                return $this->error($result->message);
         } else {
             return $this->error("error while processing");
         }
@@ -167,18 +211,27 @@ class Call extends Base {
             'login' => $this->username,
             'password' => $this->password,
             'scenarioId' => $scenarioId,
-            'user' => json_encode($phonesNumber)
+            'users' => json_encode($phonesNumber)
         ];
+
         if(isset($options['sda']))
-            array_push($params, $options['sda']);
+            $params["sda"] = $options['sda'];
         if(isset($options['call_date_time']))
-            array_push($params, $options['call_date_time']);
+            $params["callDateTime"] = $options['call_date_time'];
+        if(isset($options['campaign_name']))
+            $params["campaignName"] = $options['campaign_name'];
+
         $response = $this->client->request('POST', $url, ['form_params' => $params]);
 
-        if($response->getStatusCode() == 200)
-            return $this->success("Your calls are in process", $response->getBody()->getContents());
-        else
+        if($response->getStatusCode() == 200) {
+            $result = json_decode($response->getBody()->getContents());
+            if($result->status == 1)
+                return $this->success($result->message, $result->data);
+            else
+                return $this->error($result->message);
+        } else {
             return $this->error("error while processing");
+        }
     }
 
 }
