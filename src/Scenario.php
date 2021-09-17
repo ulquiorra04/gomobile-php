@@ -144,6 +144,7 @@ class Scenario extends Base {
 							'multipart' => [
 								'login' => $this->username,
 								'password' => $this->password,
+								'scenarioId' => $scenario,
 								'name' => $name,
 								'type' => $type,
 								'order' => $order,

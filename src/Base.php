@@ -19,7 +19,7 @@ class Base {
     const SCENARIO_SINGLE = "backoffice/Scenarios/getScenario";
     const SCENARIO_ADD = "backoffice/Scenarios/addScenario";
     const SCENARIO_AUDIO_LIST = "";
-    const SCENARIO_AUDIO_ADD = "";
+    const SCENARIO_AUDIO_ADD = "backoffice/Scenarios/addAudioToScenario";
     const CAMPAIGN_LIST = "backoffice/Campaigns/getCampaigns";
     const CAMPAIGN_SINGLE = "backoffice/Campaigns/getCampaigns";
     const CAMPAIGN_SINGLE_NAME = "backoffice/Campaigns/getCampaignsWithName";
