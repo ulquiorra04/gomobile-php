@@ -1,6 +1,5 @@
 services:
-    gomobile.sdk.api:
-        class: Gomobile\GomobileBundle\src\Gomobile
+    Gomobile\GomobileBundle\src\Gomobile:
         public: true
         arguments:
             - "%gomobile.login%"
