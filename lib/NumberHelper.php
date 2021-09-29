@@ -13,6 +13,10 @@ class NumberHelper {
     public static function isValidInternationalNumber ($number) {
         if(preg_match("/^\+212[0-9]{9}$/", $number))
             return true;
+        if(preg_match("/^00212[0-9]{9}$/", $number))
+            return true;
+        if(preg_match("/^212[0-9]{9}$/", $number))
+            return true;
         return false;
     }
 
@@ -32,11 +36,11 @@ class NumberHelper {
      * Convert international format to national format
      * 
      * @param string $phone : International format
-     * @return string $phone : National format
+     * @return string : National format
      */
     public static function phoneConverter ($phone) {
         if(self::isValidInternationalNumber($phone))
-            return "0".ltrim($phone, "+212");
+            return "0".substr($phone, -9);
     }
 
     /**

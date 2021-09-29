@@ -6,10 +6,13 @@ use Gomobile\GomobileBundle\lib\NumberHelper;
 use Gomobile\GomobileBundle\lib\ParameterHelper;
 
 class Call extends Base {
+
     private $parameterHelper;
+    private $url;
 
     public function __construct ($client, $username, $password, $demo=false) {
         $this->parameterHelper = new ParameterHelper();
+        $this->url = ($demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
         parent::__construct($client, $username, $password, $demo);
     }
 
@@ -28,8 +31,7 @@ class Call extends Base {
         if(!NumberHelper::isValidNationalNumber($phoneNumber))
             return $this->error('You must use a valid moroccan phone number');
 
-        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::SINGLE_STATIC_CALL;
+        $this->url .= parent::SINGLE_STATIC_CALL;
         $params = [
             'login' => $this->username,
             'password' => $this->password,
@@ -44,7 +46,7 @@ class Call extends Base {
         if(isset($options['campaign_name']))
             $params["campaignName"] = $options['campaign_name'];
 
-        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+        $response = $this->client->request('POST', $this->url, ['form_params' => $params]);
         if($response->getStatusCode() == 200) {
             $result = json_decode($response->getBody()->getContents());
             if($result->status == 1)
@@ -103,10 +105,8 @@ class Call extends Base {
         if(isset($options['campaign_name']))
             $params["campaignName"] = $options['campaign_name'];
 
-
-        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::MULTIPLE_STATIC_CALL;
-        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+        $this->url .= parent::MULTIPLE_STATIC_CALL;
+        $response = $this->client->request('POST', $this->url, ['form_params' => $params]);
 
         if($response->getStatusCode() == 200) {
             $result = json_decode($response->getBody()->getContents());
@@ -142,8 +142,7 @@ class Call extends Base {
             return $this->error("You must send one of these parameters : user_amount, date, user_agent");
         $requestParameters["phoneNumber"] = $phoneNumber;
 
-        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::SINGLE_DYNAMIC_CALL;
+        $this->url .= parent::SINGLE_DYNAMIC_CALL;
 
         $params = [
             'login' => $this->username,
@@ -159,7 +158,7 @@ class Call extends Base {
         if(isset($options['campaign_name']))
             $params["campaignName"] = $options['campaign_name'];
 
-        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+        $response = $this->client->request('POST', $this->url, ['form_params' => $params]);
 
         if($response->getStatusCode() == 200) {
             $result = $response->getBody()->getContents();
@@ -205,8 +204,7 @@ class Call extends Base {
         }
 
         // Prepare to make the call
-        $url = ($this->demo) ? parent::BASE_LOCAL_DOMAINE : parent::BASE_GLOBAL_DOMAINE;
-        $url .= parent::MULTIPLE_DYNAMIC_CALL;
+        $this->url .= parent::MULTIPLE_DYNAMIC_CALL;
         $params = [
             'login' => $this->username,
             'password' => $this->password,
@@ -221,7 +219,47 @@ class Call extends Base {
         if(isset($options['campaign_name']))
             $params["campaignName"] = $options['campaign_name'];
 
-        $response = $this->client->request('POST', $url, ['form_params' => $params]);
+        $response = $this->client->request('POST', $this->url, ['form_params' => $params]);
+
+        if($response->getStatusCode() == 200) {
+            $result = json_decode($response->getBody()->getContents());
+            if($result->status == 1)
+                return $this->success($result->message, $result->data);
+            else
+                return $this->error($result->message);
+        } else {
+            return $this->error("error while processing");
+        }
+    }
+
+    /**
+     * @param string $phone "0707071290"
+     * @param int $scenarioId
+     * @param array $options
+     *
+     * @return array
+     */
+    public function makeDirectCall ($phone, $scenarioId, $options = array())
+    {
+        if(NumberHelper::isValidInternationalNumber($phone))
+            $phone = NumberHelper::phoneConverter($phone);
+
+        if(!NumberHelper::isValidNationalNumber($phone))
+            return $this->error("Please Provide a valid phone number");
+
+
+        $this->url .= Parent::DIRECT_CALL;
+        $params = [
+            'login' => $this->username,
+            'password' => $this->password,
+            'scenarioId' => $scenarioId,
+            'user' => json_encode(["phoneNumber" => $phone])
+        ];
+
+        if(isset($options["sda"]))
+            $params["sda"] = $options["sda"];
+
+        $response = $this->client->request('POST', $this->url, ['form_params' => $params]);
 
         if($response->getStatusCode() == 200) {
             $result = json_decode($response->getBody()->getContents());

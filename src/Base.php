@@ -9,23 +9,26 @@ class Base {
     protected $password;
     protected $demo;
 
-    const BASE_LOCAL_DOMAINE = "http://172.30.30.30/";
-    const BASE_GLOBAL_DOMAINE = "http://www.osix.xyz/";
-    const SINGLE_STATIC_CALL = "backoffice/ScenariosUsers/makeSingleStaticCall";
-    const MULTIPLE_STATIC_CALL = "backoffice/ScenariosUsers/makeMultipleStaticCall";
-    const SINGLE_DYNAMIC_CALL = "backoffice/ScenariosUsers/makeSingleDynamicCall";
-    const MULTIPLE_DYNAMIC_CALL = "backoffice/ScenariosUsers/makeMultipleDynamicCall";
-    const SCENARIO_LIST = "backoffice/Scenarios/getScenarios";
-    const SCENARIO_SINGLE = "backoffice/Scenarios/getScenario";
-    const SCENARIO_ADD = "backoffice/Scenarios/addScenario";
+    const BASE_LOCAL_DOMAINE = "http://172.30.30.30/backoffice/";
+    const BASE_GLOBAL_DOMAINE = "http://www.osix.xyz/backoffice/";
+
+    const SINGLE_STATIC_CALL = "ScenariosUsers/makeSingleStaticCall";
+    const MULTIPLE_STATIC_CALL = "ScenariosUsers/makeMultipleStaticCall";
+    const SINGLE_DYNAMIC_CALL = "ScenariosUsers/makeSingleDynamicCall";
+    const MULTIPLE_DYNAMIC_CALL = "ScenariosUsers/makeMultipleDynamicCall";
+    const DIRECT_CALL = "ScenariosUsers/makeDirectCall";
+
+    const SCENARIO_LIST = "Scenarios/getScenarios";
+    const SCENARIO_SINGLE = "Scenarios/getScenario";
+    const SCENARIO_ADD = "Scenarios/addScenario";
     const SCENARIO_AUDIO_LIST = "";
-    const SCENARIO_AUDIO_ADD = "backoffice/Scenarios/addAudioToScenario";
-    const CAMPAIGN_LIST = "backoffice/Campaigns/getCampaigns";
-    const CAMPAIGN_SINGLE = "backoffice/Campaigns/getCampaigns";
-    const CAMPAIGN_SINGLE_NAME = "backoffice/Campaigns/getCampaignsWithName";
-    const CAMPAIGN_VALIDATION = "backoffice/Campaigns/validateCampaign";
-    const LOG_LIST = "backoffice/Logs/getLogs";
-    const BULK_FILE_WRITER = "backoffice/ScenariosUsers/saveSUData";
+    const SCENARIO_AUDIO_ADD = "Scenarios/addAudioToScenario";
+    const CAMPAIGN_LIST = "Campaigns/getCampaigns";
+    const CAMPAIGN_SINGLE = "Campaigns/getCampaigns";
+    const CAMPAIGN_SINGLE_NAME = "Campaigns/getCampaignsWithName";
+    const CAMPAIGN_VALIDATION = "Campaigns/validateCampaign";
+    const LOG_LIST = "Logs/getLogs";
+    const BULK_FILE_WRITER = "ScenariosUsers/saveSUData";
 
     public function __construct ($client, $username, $password, $demo=false) {
         $this->client = $client;
