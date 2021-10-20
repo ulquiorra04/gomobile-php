@@ -23,7 +23,7 @@ class Base {
     const SCENARIO_ADD = "Scenarios/addScenario";
     const SCENARIO_AUDIO_LIST = "";
     const SCENARIO_AUDIO_ADD = "Scenarios/addAudioToScenario";
-    const SCENARIO_AUDIO_EDIT = "Scenarios/editAudioScenario";
+    const SCENARIO_AUDIO_EDIT = "Scenarios/updateAudioToScenario";
     const CAMPAIGN_LIST = "Campaigns/getCampaigns";
     const CAMPAIGN_SINGLE = "Campaigns/getCampaigns";
     const CAMPAIGN_SINGLE_NAME = "Campaigns/getCampaignsWithName";
