@@ -15,7 +15,7 @@ class Scenario extends Base {
     /**
 	 * GET List of scenarios
 	 * 
-	 * @return Array of scenarios
+	 * @return array of scenarios
 	 */
 	public function getScenarios () {
 		$this->url .= parent::SCENARIO_LIST;
@@ -40,7 +40,7 @@ class Scenario extends Base {
 	 * GET Single Scenario
 	 * 
 	 * @param int ScenarioId
-	 * @return Object Scenario
+	 * @return array
 	 */
 	public function getScenario ($scenarioId) {
 		$this->url .= parent::SCENARIO_SINGLE;
@@ -66,7 +66,7 @@ class Scenario extends Base {
 	 * ADD Scenario method
 	 * 
 	 * @param string name The scenario name
-	 * @return int scenarioId
+	 * @return array
 	 */
 	public function addScenario ($name) {
 		$this->url .= parent::SCENARIO_ADD;
@@ -88,6 +88,10 @@ class Scenario extends Base {
 		}
 	}
 
+    /**
+     * @param $scenarioId
+     * @return array
+     */
 	public function getAudiosScenario ($scenarioId) {
 		$this->url .= parent::SCENARIO_AUDIO_LIST;
 		$response = $this->client->request('POST', $this->url, [
