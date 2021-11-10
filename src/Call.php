@@ -239,12 +239,15 @@ class Call extends Base {
      *
      * @return array
      */
-    public function makeDirectCall ($phone, $scenarioId, $options = array())
+    public function makeDirectCall ($phone, $scenarioId, $targetPhone, $options = array())
     {
         if(NumberHelper::isValidInternationalNumber($phone))
             $phone = NumberHelper::phoneConverter($phone);
 
-        if(!NumberHelper::isValidNationalNumber($phone))
+        if(NumberHelper::isValidInternationalNumber($targetPhone))
+            $targetPhone = NumberHelper::phoneConverter($targetPhone);
+
+        if(!NumberHelper::isValidNationalNumber($phone) || !NumberHelper::isValidNationalNumber($targetPhone))
             return $this->error("Please Provide a valid phone number");
 
 
@@ -253,7 +256,8 @@ class Call extends Base {
             'login' => $this->username,
             'password' => $this->password,
             'scenarioId' => $scenarioId,
-            'user' => json_encode(["phoneNumber" => $phone])
+            'user' => json_encode(["phoneNumber" => $phone]),
+            'target' => json_encode(['targetNumber' => $targetPhone])
         ];
 
         if(isset($options["sda"]))
