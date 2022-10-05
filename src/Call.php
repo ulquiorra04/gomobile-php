@@ -84,7 +84,7 @@ class Call extends Base {
             if(!property_exists($phoneNumber, "phoneNumber"))
                 return $this->error("Please provide a phoneNumber property for the object");
 
-            if(NumberHelper::isValidNationalNumber($phoneNumber->phoneNumber))
+            if(!NumberHelper::isValidNationalNumber($phoneNumber->phoneNumber))
                 return $this->error("incorrect format for phone number $phoneNumber->phoneNumber");
 
             if(!$this->parameterHelper->isSupportedParameters($phoneNumber))
