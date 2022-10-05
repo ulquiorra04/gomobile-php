@@ -54,7 +54,7 @@ class NumberHelper {
         if(!is_array($phoneNumbers))
             return false;
         foreach ($phoneNumbers as $phone) {
-                if(!self::isValidNationalNumber($phone))
+                if(!self::isValidNationalNumber($phone->phoneNumber))
                 return false;
         }
         return true;
