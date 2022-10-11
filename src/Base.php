@@ -12,7 +12,7 @@ class Base {
     const BASE_LOCAL_DOMAINE = "http://172.30.30.30/backoffice/";
     const BASE_GLOBAL_DOMAINE = "http://www.osix.xyz/backoffice/";
 
-    const BASE_LOCAL_DOMAIN_V2 = "http://10.40.1.91:81/external";
+    const BASE_LOCAL_DOMAIN_V2 = "http://10.40.1.91:81/external/";
 
     const SINGLE_STATIC_CALL = "ScenariosUsers/makeSingleStaticCall";
     const MULTIPLE_STATIC_CALL = "ScenariosUsers/makeMultipleStaticCall";
