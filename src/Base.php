@@ -12,11 +12,16 @@ class Base {
     const BASE_LOCAL_DOMAINE = "http://172.30.30.30/backoffice/";
     const BASE_GLOBAL_DOMAINE = "http://www.osix.xyz/backoffice/";
 
+    const BASE_LOCAL_DOMAIN_V2 = "http://10.40.1.91:81/external";
+
     const SINGLE_STATIC_CALL = "ScenariosUsers/makeSingleStaticCall";
     const MULTIPLE_STATIC_CALL = "ScenariosUsers/makeMultipleStaticCall";
     const SINGLE_DYNAMIC_CALL = "ScenariosUsers/makeSingleDynamicCall";
     const MULTIPLE_DYNAMIC_CALL = "ScenariosUsers/makeMultipleDynamicCall";
     const DIRECT_CALL = "ScenariosUsers/makeDirectCall";
+
+    const POST_MULTIPLE_SIMPLE_CALL = "post_simple_call";
+    const POST_MULTIPLE_DYNAMIC_CALL = "post_dynamic_call";
 
     const SCENARIO_LIST = "Scenarios/getScenarios";
     const SCENARIO_SINGLE = "Scenarios/getScenario";
