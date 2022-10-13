@@ -341,14 +341,6 @@ class Call extends Base {
         if(!NumberHelper::isValidArrayPhoneNumbers($phones))
             return $this->error("You have to provide a valid phone numbers");
 
-        $phones = json_decode($phones);
-        $phones_osix = [];
-        if(!is_array($phones) || empty($phones))
-            return $this->error("You have to send an array of phone numbers");
-
-        if(!NumberHelper::isValidArrayPhoneNumbers($phones))
-            return $this->error("You have to provide a valid phone numbers");
-
         foreach ($phones as $phoneNumber) {
             if(is_string($phoneNumber))
                 $phoneNumber = json_decode($phoneNumber);
